@@ -1,31 +1,45 @@
-import type { AWS } from '@serverless/typescript';
+import type { AWS } from "@serverless/typescript";
 
-import hello from '@functions/hello';
+import hello from "@functions/hello";
 
 const serverlessConfiguration: AWS = {
-  service: 'pickles-auction-services',
-  frameworkVersion: '2',
+  service: "pickles-auction-services",
+  frameworkVersion: "2",
   custom: {
-    webpack: {
-      webpackConfig: './webpack.config.js',
-      includeModules: true,
+    region: "${opt:region, self:provider.region}",
+    stage: "${opt:stage, self:provider.stage}",
+    ["serverless-offline"]: {
+      httpPort: 3000,
+      babelOptions: {
+        presets: ["env"],
+      },
     },
   },
-  plugins: ['serverless-webpack'],
+  package: {
+    individually: true,
+  },
+  plugins: [
+    "serverless-bundle",
+    "serverless-offline",
+    "serverless-dotenv-plugin",
+  ],
   provider: {
-    name: 'aws',
-    runtime: 'nodejs14.x',
+    name: "aws",
+    runtime: "nodejs14.x",
+    stage: "dev",
+    region: "ap-southeast-1",
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
     },
     environment: {
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
+      REGION: "${self:custom.region}",
+      STAGE: "${self:custom.stage}",
     },
-    lambdaHashingVersion: '20201221',
+    lambdaHashingVersion: "20201221",
   },
-  // import the function via paths
-  functions: { hello },
+  functions: { hello }
 };
 
 module.exports = serverlessConfiguration;

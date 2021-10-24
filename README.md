@@ -4,6 +4,14 @@ This project has been generated using the `aws-nodejs-typescript` template from 
 
 For detailed instructions, please refer to the [documentation](https://www.serverless.com/framework/docs/providers/aws/).
 
+## Packages we use in this project
+
+- [aws-sdk](https://www.npmjs.com/package/aws-sdk): use this to communicate with AWS.
+- [uuid](https://www.npmjs.com/package/uuid) use this to generate unique id for database.
+- [serverless-bundle](https://www.npmjs.com/package/serverless-bundle) use this to simplify our serverless project configuration.
+- [serverless-dotenv-plugin](https://www.npmjs.com/package/serverless-dotenv-plugin) use this to enable `.env` variable into lambda environment.
+- [serverless-offline](https://www.npmjs.com/package/serverless-offline) use this to run our application and Lambda functions locally.
+
 ## Installation/deployment instructions
 
 Depending on your preferred package manager, follow the instructions below to deploy your project.
@@ -14,11 +22,6 @@ Depending on your preferred package manager, follow the instructions below to de
 
 - Run `npm i` to install the project dependencies
 - Run `npx sls deploy` to deploy this stack to AWS
-
-### Using Yarn
-
-- Run `yarn` to install the project dependencies
-- Run `yarn sls deploy` to deploy this stack to AWS
 
 ## Test your service
 
@@ -35,7 +38,6 @@ This template contains a single lambda function triggered by an HTTP request mad
 In order to test the hello function locally, run the following command:
 
 - `npx sls invoke local -f hello --path src/functions/hello/mock.json` if you're using NPM
-- `yarn sls invoke local -f hello --path src/functions/hello/mock.json` if you're using Yarn
 
 Check the [sls invoke local command documentation](https://www.serverless.com/framework/docs/providers/aws/cli-reference/invoke-local/) for more information.
 

@@ -1,6 +1,8 @@
 import type { AWS } from "@serverless/typescript";
 
-import hello from "@functions/hello";
+import createEmailTemplate from "@functions/createEmailTemplate";
+import updateEmailTemplate from "@functions/updateEmailTemplate";
+import deleteEmailTemplate from "@functions/deleteEmailTemplate";
 
 const serverlessConfiguration: AWS = {
   service: "pickles-auction-services",
@@ -39,7 +41,17 @@ const serverlessConfiguration: AWS = {
     },
     lambdaHashingVersion: "20201221",
   },
-  functions: { hello }
+  functions: { createEmailTemplate, updateEmailTemplate, deleteEmailTemplate },
+  resources: {
+    Resources: {
+      SendEmailQueue: {
+        Type: "AWS::SQS::Queue",
+        Properties: {
+          QueueName: "SendEmailQueue",
+        },
+      },
+    },
+  },
 };
 
 module.exports = serverlessConfiguration;

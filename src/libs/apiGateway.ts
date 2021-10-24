@@ -3,6 +3,7 @@ import type {
   APIGatewayProxyResult,
   Handler,
 } from "aws-lambda";
+
 import type { FromSchema } from "json-schema-to-ts";
 
 type ValidatedAPIGatewayProxyEvent<S> = Omit<APIGatewayProxyEvent, "body"> & {

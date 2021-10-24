@@ -1,4 +1,4 @@
-import schema from "./schema";
+import { EMAIL_TEMPLATE_OBJECT_SCHEMA } from "@functions/schema";
 import { handlerPath } from "@libs/handlerResolver";
 
 export default {
@@ -7,10 +7,10 @@ export default {
     {
       http: {
         method: "post",
-        path: "hello",
+        path: "emailTemplate",
         request: {
           schema: {
-            "application/json": schema,
+            "application/json": EMAIL_TEMPLATE_OBJECT_SCHEMA,
           },
         },
       },

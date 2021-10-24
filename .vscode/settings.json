@@ -1,0 +1,16 @@
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "eslint.alwaysShowStatus": true,
+  "files.eol": "\n",
+  "search.exclude": {
+    "**/node_modules/*": true,
+    "**/dist/*": true
+  },
+  "files.exclude": {
+    "**/.DS_Store": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}

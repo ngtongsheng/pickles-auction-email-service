@@ -1,11 +1,12 @@
 {
-  "name": "pickles-auction-services",
+  "name": "pickles-auction-email-service",
   "version": "1.0.0",
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
   "scripts": {
     "test": "serverless-bundle test",
-    "deploy": "serverless deploy"
+    "deploy": "serverless deploy",
+    "dev": "serverless offline"
   },
   "engines": {
     "node": ">=14.15.0"

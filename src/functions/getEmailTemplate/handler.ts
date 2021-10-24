@@ -1,6 +1,6 @@
 import "source-map-support/register";
 
-import type { ValidatedEventAPIGatewayProxyEvent } from "@libs/apiGateway";
+import { ValidatedEventAPIGatewayProxyEvent } from "@libs/apiGateway";
 import { formatResponse } from "@libs/apiGateway";
 import { middyfy } from "@libs/lambda";
 import { SES } from "aws-sdk";
@@ -8,7 +8,7 @@ import { autoCatch } from "@libs/autoCatch";
 
 const ses = new SES();
 
-const deleteEmailTemplate: ValidatedEventAPIGatewayProxyEvent<
+const getEmailTemplate: ValidatedEventAPIGatewayProxyEvent<
   Record<string, never>
 > = (event) =>
   autoCatch(async () => {
@@ -18,11 +18,11 @@ const deleteEmailTemplate: ValidatedEventAPIGatewayProxyEvent<
       TemplateName: name,
     };
 
-    const data = await ses.deleteTemplate(params).promise();
+    const data = await ses.getTemplate(params).promise();
 
     return formatResponse({
       ...data.$response.data,
     });
   });
 
-export const main = middyfy(deleteEmailTemplate);
+export const main = middyfy(getEmailTemplate);

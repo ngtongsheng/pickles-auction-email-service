@@ -1,4 +1,3 @@
-import { EMAIL_TEMPLATE_SCHEMA } from "@functions/schema";
 import { handlerPath } from "@libs/handlerResolver";
 
 export default {
@@ -8,11 +7,6 @@ export default {
       http: {
         method: "delete",
         path: "emailTemplate",
-        request: {
-          schema: {
-            "application/json": EMAIL_TEMPLATE_SCHEMA,
-          },
-        },
       },
     },
   ],

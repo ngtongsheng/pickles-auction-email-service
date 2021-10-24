@@ -1,11 +1,12 @@
 import type { AWS } from "@serverless/typescript";
 
+import getEmailTemplate from "@functions/getEmailTemplate";
 import createEmailTemplate from "@functions/createEmailTemplate";
 import updateEmailTemplate from "@functions/updateEmailTemplate";
 import deleteEmailTemplate from "@functions/deleteEmailTemplate";
 
 const serverlessConfiguration: AWS = {
-  service: "pickles-auction-services",
+  service: "pickles-auction-email-service",
   frameworkVersion: "2",
   custom: {
     region: "${opt:region, self:provider.region}",
@@ -41,7 +42,12 @@ const serverlessConfiguration: AWS = {
     },
     lambdaHashingVersion: "20201221",
   },
-  functions: { createEmailTemplate, updateEmailTemplate, deleteEmailTemplate },
+  functions: {
+    getEmailTemplate,
+    createEmailTemplate,
+    updateEmailTemplate,
+    deleteEmailTemplate,
+  },
   resources: {
     Resources: {
       SendEmailQueue: {

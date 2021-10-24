@@ -5,6 +5,7 @@ import createEmailTemplate from "@functions/createEmailTemplate";
 import updateEmailTemplate from "@functions/updateEmailTemplate";
 import deleteEmailTemplate from "@functions/deleteEmailTemplate";
 import sendEmail from "@functions/sendEmail";
+import testSQSReceiver from "@functions/testSQSReceiver";
 
 const serverlessConfiguration: AWS = {
   service: "pickles-auction-email-service",
@@ -60,13 +61,14 @@ const serverlessConfiguration: AWS = {
     updateEmailTemplate,
     deleteEmailTemplate,
     sendEmail,
+    testSQSReceiver,
   },
   resources: {
     Resources: {
-      SendEmailQueue: {
+      TestSQSQueue: {
         Type: "AWS::SQS::Queue",
         Properties: {
-          QueueName: "SendEmailQueue",
+          QueueName: "TestSQSQueue",
         },
       },
     },

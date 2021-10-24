@@ -12,16 +12,19 @@ const ses = new SES();
 const sendEmail: ValidatedEventAPIGatewayProxyEvent<typeof SEND_EMAIL_SCHEMA> =
   (event) =>
     autoCatch(async () => {
-      const { TemplateName, Source, Destinations } = event.body;
+      const {
+        TemplateName,
+        Source,
+        Destinations,
+        DefaultTemplateData = "{}",
+      } = event.body;
 
       const params = {
         Template: TemplateName,
-        Destinations,
         Source,
-        DefaultTemplateData: "{}",
+        Destinations,
+        DefaultTemplateData,
       };
-
-      console.log(params);
 
       const data = await ses.sendBulkTemplatedEmail(params).promise();
 

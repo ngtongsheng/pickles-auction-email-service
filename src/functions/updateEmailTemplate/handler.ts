@@ -13,13 +13,13 @@ const updateEmailTemplate: ValidatedEventAPIGatewayProxyEvent<
   typeof EMAIL_TEMPLATE_SCHEMA
 > = (event) =>
   autoCatch(async () => {
-    const { name, subject, body } = event.body;
+    const { TemplateName, HtmlPart, SubjectPart } = event.body;
 
     const params = {
       Template: {
-        TemplateName: name,
-        HtmlPart: body,
-        SubjectPart: subject,
+        TemplateName,
+        HtmlPart,
+        SubjectPart,
       },
     };
 

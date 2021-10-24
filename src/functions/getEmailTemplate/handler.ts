@@ -12,10 +12,10 @@ const getEmailTemplate: ValidatedEventAPIGatewayProxyEvent<
   Record<string, never>
 > = (event) =>
   autoCatch(async () => {
-    const { name } = event.queryStringParameters;
+    const { TemplateName } = event.queryStringParameters;
 
     const params = {
-      TemplateName: name,
+      TemplateName,
     };
 
     const data = await ses.getTemplate(params).promise();

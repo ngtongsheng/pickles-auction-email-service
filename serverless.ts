@@ -4,6 +4,7 @@ import getEmailTemplate from "@functions/getEmailTemplate";
 import createEmailTemplate from "@functions/createEmailTemplate";
 import updateEmailTemplate from "@functions/updateEmailTemplate";
 import deleteEmailTemplate from "@functions/deleteEmailTemplate";
+import sendEmail from "@functions/sendEmail";
 
 const serverlessConfiguration: AWS = {
   service: "pickles-auction-email-service",
@@ -31,7 +32,18 @@ const serverlessConfiguration: AWS = {
     runtime: "nodejs14.x",
     stage: "dev",
     region: "ap-southeast-1",
+    usagePlan: {
+      throttle: {
+        burstLimit: 1,
+        rateLimit: 1,
+      },
+    },
     apiGateway: {
+      apiKeys: [
+        {
+          name: "EmailServiceKey",
+        },
+      ],
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
     },
@@ -47,6 +59,7 @@ const serverlessConfiguration: AWS = {
     createEmailTemplate,
     updateEmailTemplate,
     deleteEmailTemplate,
+    sendEmail,
   },
   resources: {
     Resources: {

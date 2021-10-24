@@ -7,11 +7,13 @@ export const autoCatch = async (
   try {
     return await method();
   } catch (error) {
+    const { message, statusCode } = <AWSError>error;
     return formatResponse(
       {
+        message,
         ...error,
       },
-      (<AWSError>error).statusCode
+      statusCode
     );
   }
 };

@@ -12,10 +12,10 @@ const deleteEmailTemplate: ValidatedEventAPIGatewayProxyEvent<
   Record<string, never>
 > = (event) =>
   autoCatch(async () => {
-    const { name } = event.queryStringParameters;
+    const { TemplateName } = event.queryStringParameters;
 
     const params = {
-      TemplateName: name,
+      TemplateName,
     };
 
     const data = await ses.deleteTemplate(params).promise();

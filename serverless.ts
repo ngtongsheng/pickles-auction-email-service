@@ -6,6 +6,7 @@ import updateEmailTemplate from "@functions/updateEmailTemplate";
 import deleteEmailTemplate from "@functions/deleteEmailTemplate";
 import sendEmail from "@functions/sendEmail";
 import sendEmailQueueReceiver from "@functions/sendEmailQueueReceiver";
+import sendEmailErrorTopicToSlack from "@functions/sendEmailErrorTopicToSlack";
 
 const serverlessConfiguration: AWS = {
   service: "pickles-auction-email-service",
@@ -75,6 +76,11 @@ const serverlessConfiguration: AWS = {
             Action: ["sqs:SendMessage"],
             Resource: "arn:aws:sqs:${self:custom.region}:*:*",
           },
+          {
+            Effect: "Allow",
+            Action: ["sns:Publish"],
+            Resource: "arn:aws:sns:${self:custom.region}:*:*",
+          },
         ],
       },
     },
@@ -86,6 +92,7 @@ const serverlessConfiguration: AWS = {
     deleteEmailTemplate,
     sendEmail,
     sendEmailQueueReceiver,
+    sendEmailErrorTopicToSlack,
   },
   resources: {
     Resources: {
@@ -94,6 +101,12 @@ const serverlessConfiguration: AWS = {
         Properties: {
           QueueName: "SendEmailQueue",
           ReceiveMessageWaitTimeSeconds: 5,
+        },
+      },
+      SendEmailErrorTopic: {
+        Type: "AWS::SNS::Topic",
+        Properties: {
+          TopicName: "SendEmailErrorTopic",
         },
       },
     },

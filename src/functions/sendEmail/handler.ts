@@ -3,11 +3,11 @@ import "source-map-support/register";
 import type { ValidatedEventAPIGatewayProxyEvent } from "@libs/apiGateway";
 import { formatResponse } from "@libs/apiGateway";
 import { middyfy } from "@libs/lambda";
-import { SES } from "aws-sdk";
+import { SQS } from "aws-sdk";
 import { SEND_EMAIL_SCHEMA } from "@functions/schema";
 import { autoCatch } from "@libs/autoCatch";
 
-const ses = new SES();
+const sqs = new SQS();
 
 const sendEmail: ValidatedEventAPIGatewayProxyEvent<typeof SEND_EMAIL_SCHEMA> =
   (event) =>
@@ -19,14 +19,19 @@ const sendEmail: ValidatedEventAPIGatewayProxyEvent<typeof SEND_EMAIL_SCHEMA> =
         DefaultTemplateData = "{}",
       } = event.body;
 
-      const params = {
-        Template: TemplateName,
-        Source,
-        Destinations,
-        DefaultTemplateData,
-      };
+      const QueueUrl = `https://sqs.ap-southeast-1.amazonaws.com/530274274671/SendEmailQueue`;
 
-      const data = await ses.sendBulkTemplatedEmail(params).promise();
+      const data = await sqs
+        .sendMessage({
+          QueueUrl,
+          MessageBody: JSON.stringify({
+            Template: TemplateName,
+            Source,
+            Destinations,
+            DefaultTemplateData,
+          }),
+        })
+        .promise();
 
       return formatResponse({
         ...data.$response.data,

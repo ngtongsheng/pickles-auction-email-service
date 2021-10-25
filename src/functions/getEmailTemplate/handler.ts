@@ -7,7 +7,6 @@ import { SES } from "aws-sdk";
 import { autoCatch } from "@libs/autoCatch";
 
 const ses = new SES();
-// const sqs = new SQS();
 
 const getEmailTemplate: ValidatedEventAPIGatewayProxyEvent<
   Record<string, never>

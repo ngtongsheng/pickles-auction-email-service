@@ -5,7 +5,7 @@ import createEmailTemplate from "@functions/createEmailTemplate";
 import updateEmailTemplate from "@functions/updateEmailTemplate";
 import deleteEmailTemplate from "@functions/deleteEmailTemplate";
 import sendEmail from "@functions/sendEmail";
-import testSQSReceiver from "@functions/testSQSReceiver";
+import sendEmailQueueReceiver from "@functions/sendEmailQueueReceiver";
 
 const serverlessConfiguration: AWS = {
   service: "pickles-auction-email-service",
@@ -48,6 +48,7 @@ const serverlessConfiguration: AWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
       REGION: "${self:custom.region}",
       STAGE: "${self:custom.stage}",
+      ACCOUNT_ID: "530274274671",
     },
     lambdaHashingVersion: "20201221",
     iam: {
@@ -55,8 +56,24 @@ const serverlessConfiguration: AWS = {
         statements: [
           {
             Effect: "Allow",
+            Action: [
+              "ses:CreateTemplate",
+              "ses:DeleteTemplate",
+              "ses:UpdateTemplate",
+              "ses:GetTemplate",
+            ],
+            // Still figuring out why arn:aws:ses:${self:custom.region}:*:* is not working for ses template related action
+            Resource: "*",
+          },
+          {
+            Effect: "Allow",
             Action: ["ses:SendBulkTemplatedEmail"],
-            Resource: "arn:aws:ses:ap-southeast-1:*:*",
+            Resource: "arn:aws:ses:${self:custom.region}:*:*",
+          },
+          {
+            Effect: "Allow",
+            Action: ["sqs:SendMessage"],
+            Resource: "arn:aws:sqs:${self:custom.region}:*:*",
           },
         ],
       },
@@ -68,14 +85,14 @@ const serverlessConfiguration: AWS = {
     updateEmailTemplate,
     deleteEmailTemplate,
     sendEmail,
-    testSQSReceiver,
+    sendEmailQueueReceiver,
   },
   resources: {
     Resources: {
-      TestSQSQueue: {
+      SendEmailQueue: {
         Type: "AWS::SQS::Queue",
         Properties: {
-          QueueName: "TestSQSQueue",
+          QueueName: "SendEmailQueue",
           ReceiveMessageWaitTimeSeconds: 5,
         },
       },

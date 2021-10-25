@@ -23,11 +23,7 @@ const serverlessConfiguration: AWS = {
   package: {
     individually: true,
   },
-  plugins: [
-    "serverless-bundle",
-    "serverless-offline",
-    "serverless-dotenv-plugin",
-  ],
+  plugins: ["serverless-bundle", "serverless-offline"],
   provider: {
     name: "aws",
     runtime: "nodejs14.x",

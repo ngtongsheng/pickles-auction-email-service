@@ -54,6 +54,17 @@ const serverlessConfiguration: AWS = {
       STAGE: "${self:custom.stage}",
     },
     lambdaHashingVersion: "20201221",
+    iam: {
+      role: {
+        statements: [
+          {
+            Effect: "Allow",
+            Action: ["ses:SendBulkTemplatedEmail"],
+            Resource: "arn:aws:ses:ap-southeast-1:*:*",
+          },
+        ],
+      },
+    },
   },
   functions: {
     getEmailTemplate,
@@ -69,6 +80,7 @@ const serverlessConfiguration: AWS = {
         Type: "AWS::SQS::Queue",
         Properties: {
           QueueName: "TestSQSQueue",
+          ReceiveMessageWaitTimeSeconds: 5,
         },
       },
     },

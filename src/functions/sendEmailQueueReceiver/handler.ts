@@ -10,31 +10,28 @@ import {
 const ses = new SES();
 const sns = new SNS();
 
-const sendEmailQueueReceiver: SQSHandler = async (event) => {
-  const sendBulkTemplatedEmailparams = JSON.parse(
-    event.Records[0].body
-  ) as SendBulkTemplatedEmailRequest;
-
+const sendEmailQueueReceiver: SQSHandler = async ({ Records }) => {
   try {
-    const data = await ses
-      .sendBulkTemplatedEmail(sendBulkTemplatedEmailparams)
-      .promise();
+    await Promise.all([
+      Records.map(async ({ body }) => {
+        const params = JSON.parse(body) as SendBulkTemplatedEmailRequest;
+        const data = await ses.sendBulkTemplatedEmail(params).promise();
+        const response = data.$response.data as SendBulkTemplatedEmailResponse;
 
-    const sendEmailResponse = data.$response
-      .data as SendBulkTemplatedEmailResponse;
+        const unsuccessfulEmails = response.Status.filter(
+          ({ Status }) => Status !== "Success"
+        );
 
-    const unsuccessfulEmails = sendEmailResponse.Status.filter(
-      ({ Status }) => Status !== "Success"
-    );
+        if (unsuccessfulEmails.length) {
+          const snsPublishParams = {
+            Message: JSON.stringify({ unsuccessfulEmails }),
+            TopicArn: `arn:aws:sns:${process.env.REGION}:${process.env.ACCOUNT_ID}:SendEmailErrorTopic`,
+          };
 
-    if (unsuccessfulEmails.length) {
-      const snsPublishParams = {
-        Message: JSON.stringify({ unsuccessfulEmails }),
-        TopicArn: `arn:aws:sns:${process.env.REGION}:${process.env.ACCOUNT_ID}:SendEmailErrorTopic`,
-      };
-
-      await sns.publish(snsPublishParams).promise();
-    }
+          await sns.publish(snsPublishParams).promise();
+        }
+      }),
+    ]);
   } catch (error) {
     console.log("ERROR", error);
   }

@@ -1,5 +1,9 @@
 ## Senior Principal Front-end Engineer take home task by Ng Tong Sheng
 
+Total time spent on this project: approximately 14 hours in 4 days, this includes time spent reading and video watching, and consultation time with AWS architect. 
+
+## About the boilerplate
+
 This project has been generated using the `aws-nodejs-typescript` template from the [Serverless framework](https://www.serverless.com/).
 
 For detailed instructions, please refer to the [documentation](https://www.serverless.com/framework/docs/providers/aws/).

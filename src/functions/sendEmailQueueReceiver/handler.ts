@@ -12,11 +12,15 @@ const sns = new SNS();
 
 const sendEmailQueueReceiver: SQSHandler = async ({ Records }) => {
   try {
-    await Promise.all([
+    await Promise.all(
       Records.map(async ({ body }) => {
         const params = JSON.parse(body) as SendBulkTemplatedEmailRequest;
-        const data = await ses.sendBulkTemplatedEmail(params).promise();
-        const response = data.$response.data as SendBulkTemplatedEmailResponse;
+
+        const { $response } = await ses
+          .sendBulkTemplatedEmail(params)
+          .promise();
+
+        const response = $response.data as SendBulkTemplatedEmailResponse;
 
         const unsuccessfulEmails = response.Status.filter(
           ({ Status }) => Status !== "Success"
@@ -28,10 +32,10 @@ const sendEmailQueueReceiver: SQSHandler = async ({ Records }) => {
             TopicArn: `arn:aws:sns:${process.env.REGION}:${process.env.ACCOUNT_ID}:SendEmailErrorTopic`,
           };
 
-          await sns.publish(snsPublishParams).promise();
+          sns.publish(snsPublishParams);
         }
-      }),
-    ]);
+      })
+    );
   } catch (error) {
     console.log("ERROR", error);
   }

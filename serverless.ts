@@ -33,8 +33,7 @@ const serverlessConfiguration: AWS = {
     name: "aws",
     runtime: "nodejs14.x",
     stage: "dev",
-    // @ts-ignore
-    region: "${env:REGION}",
+    region: "ap-southeast-1",
     usagePlan: {
       throttle: {
         burstLimit: 1,

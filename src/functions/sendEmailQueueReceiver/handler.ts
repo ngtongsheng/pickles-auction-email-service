@@ -30,7 +30,7 @@ const sendEmailQueueReceiver: SQSHandler = async (event) => {
     if (unsuccessfulEmails.length) {
       const snsPublishParams = {
         Message: JSON.stringify({ unsuccessfulEmails }),
-        TopicArn: "arn:aws:sns:ap-southeast-1:530274274671:SendEmailErrorTopic",
+        TopicArn: `arn:aws:sns:${process.env.REGION}:${process.env.ACCOUNT_ID}:SendEmailErrorTopic`,
       };
 
       await sns.publish(snsPublishParams).promise();

@@ -7,14 +7,11 @@ For detailed instructions, please refer to the [documentation](https://www.serve
 ## Packages we use in this project
 
 - [aws-sdk](https://www.npmjs.com/package/aws-sdk): use this to communicate with AWS.
-- [uuid](https://www.npmjs.com/package/uuid) use this to generate unique id for database.
 - [serverless-bundle](https://www.npmjs.com/package/serverless-bundle) use this to simplify our serverless project configuration.
 - [serverless-dotenv-plugin](https://www.npmjs.com/package/serverless-dotenv-plugin) use this to enable `.env` variable into lambda environment.
 - [serverless-offline](https://www.npmjs.com/package/serverless-offline) use this to run our application and Lambda functions locally.
 
 ## Installation/deployment instructions
-
-Depending on your preferred package manager, follow the instructions below to deploy your project.
 
 > **Requirements**: NodeJS `lts/fermium (v.14.15.0)`. If you're using [nvm](https://github.com/nvm-sh/nvm), run `nvm use` to ensure you're using the same Node version in local and in your lambda's runtime.
 

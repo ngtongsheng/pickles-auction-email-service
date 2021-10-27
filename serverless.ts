@@ -24,12 +24,17 @@ const serverlessConfiguration: AWS = {
   package: {
     individually: true,
   },
-  plugins: ["serverless-bundle", "serverless-offline"],
+  plugins: [
+    "serverless-dotenv-plugin",
+    "serverless-bundle",
+    "serverless-offline",
+  ],
   provider: {
     name: "aws",
     runtime: "nodejs14.x",
     stage: "dev",
-    region: "ap-southeast-1",
+    // @ts-ignore
+    region: "${env:REGION}",
     usagePlan: {
       throttle: {
         burstLimit: 1,
@@ -49,7 +54,6 @@ const serverlessConfiguration: AWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
       REGION: "${self:custom.region}",
       STAGE: "${self:custom.stage}",
-      ACCOUNT_ID: "530274274671",
     },
     lambdaHashingVersion: "20201221",
     iam: {

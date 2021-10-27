@@ -19,7 +19,7 @@ const sendEmail: ValidatedEventAPIGatewayProxyEvent<typeof SEND_EMAIL_SCHEMA> =
         DefaultTemplateData = "{}",
       } = event.body;
 
-      const QueueUrl = `https://sqs.ap-southeast-1.amazonaws.com/530274274671/SendEmailQueue`;
+      const QueueUrl = `https://sqs.${process.env.REGION}.amazonaws.com/${process.env.ACCOUNT_ID}/SendEmailQueue`;
 
       const data = await sqs
         .sendMessage({

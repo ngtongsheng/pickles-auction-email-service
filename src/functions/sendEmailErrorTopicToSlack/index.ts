@@ -5,7 +5,7 @@ export default {
   events: [
     {
       sns: {
-        arn: "arn:aws:sns:ap-southeast-1:530274274671:SendEmailErrorTopic",
+        arn: "arn:aws:sns:${env:REGION}:${env:ACCOUNT_ID}:SendEmailErrorTopic",
       },
     },
   ],
